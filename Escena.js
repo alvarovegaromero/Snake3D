@@ -1,35 +1,28 @@
 
 // Clases de la biblioteca
 
-import * as THREE from './libs/three.module.js'
-import { GUI } from './libs/dat.gui.module.js'
-import { TrackballControls } from './libs/TrackballControls.js'
+import * as THREE from '../libs/three.module.js'
+import { GUI } from '../libs/dat.gui.module.js'
+import { TrackballControls } from '../libs/TrackballControls.js'
 
-// Clases de mi proyecto
+// Clases del proyecto
 
-import { Manzana } from './Juego/Modelos/Manzana.js'
-import { Uva } from './Juego/Modelos/Uva.js'
-import { Naranja } from './Juego/Modelos/Naranja.js'
-import { Pera } from './Juego/Modelos/Pera.js'
-import { Bomba } from './Juego/Modelos/Bomba.js'
-import { Snake } from './Juego/Snake.js'
+import { Manzana } from './Modelos/Manzana.js'
+import { Uva } from './Modelos/Uva.js'
+import { Naranja } from './Modelos/Naranja.js'
+import { Pera } from './Modelos/Pera.js'
+import { Bomba } from './Modelos/Bomba.js'
+import { Snake } from './Snake.js'
 
 /*
-Apartados:
+Apartados del fichero:
 - Mensajes
 - Música
 - Funciones de la escena
 - Teclado
+- Raton
 - Comida
 */
-
-/*
-- camara
-- dispose (eliminar serpiente y frutas)
-- textura
-- raton TODO
- */
-
 
 //El tablero no es perfecto, cada casilla mide 1.0125. Por eso, necesitamos convertir un valor de la matriz a la posicion real con este factor
 const factor_conversion_mapa = 1.0125;
@@ -42,8 +35,6 @@ const tamanio_borde = 0.45;
   // la visualización de la escena
   constructor (myCanvas) { 
     super();
-
-    //this.target = new THREE.Object3D();
 
     // Incluye los bordes del tablero
     this.tamTableroX = 17;
@@ -70,7 +61,7 @@ const tamanio_borde = 0.45;
     this.reproducido = false; // Controla si se ha reproducido el sonido de gameover
 
     this.clearMessage();
-    this.setMessage("Pulsa R para iniciar el juego");
+    this.setMessage("Pulsa R para iniciar el juego"); //Mensajes iniciales del juego
     this.setMessage("Creado por: David Correa y Álvaro Vega");
   }
 
@@ -79,18 +70,13 @@ const tamanio_borde = 0.45;
   //////////////////////////////////////////////////
 
   // Enseñar un mensaje por pantalla
-  clearMessage(){
-    document.getElementById ("Messages").innerHTML = "";
-  }
-
-  // Limpia apartado mensajes
   setMessage (str) {
     document.getElementById ("Messages").innerHTML += "<h2>"+str+"</h2>";
   }
 
-  // Limpia apartado de las teclas
-  clearTeclas(){
-    document.getElementById ("Teclas").innerHTML = "";
+  // Limpia apartado mensajes
+  clearMessage(){
+    document.getElementById ("Messages").innerHTML = "";
   }
 
   // Escribe mensajes en el apartado de las teclas
@@ -102,16 +88,25 @@ const tamanio_borde = 0.45;
   setPausa (str) {
     document.getElementById ("Pausa").innerHTML += "<h2>"+str+"</h2>";
   }
+  
+  // Limpia apartado de las teclas
+  clearTeclas(){
+    document.getElementById ("Teclas").innerHTML = "";
+  }
 
   // Elimina mensaje de pausa
   clearPausa(){
     document.getElementById ("Pausa").innerHTML = "";
   }
 
+  //Limpia apartado de GameOver
+  clearGameOver(){
+    document.getElementById ("gameover").innerHTML = "";
+  }
+
   //////////////////////////////////////////////////
   // FIN MENSAJES
   //////////////////////////////////////////////////
-
 
   //////////////////////////////////////////////////
   // MÚSICA
@@ -126,7 +121,7 @@ const tamanio_borde = 0.45;
     this.sound = new THREE.Audio(listener);
 
     const audioLoader = new THREE.AudioLoader();
-    audioLoader.load('./Juego/Musica/CancionSnake.mp3',
+    audioLoader.load('./Musica/CancionSnake.mp3',
     function (buffer){
       that.sound.setBuffer(buffer);
       that.sound.setLoop(true);
@@ -142,7 +137,7 @@ const tamanio_borde = 0.45;
     this.gameover = new THREE.Audio(listener);
 
     const audioLoader = new THREE.AudioLoader();
-    audioLoader.load('./Juego/Musica/gameover2.mp3',
+    audioLoader.load('./Musica/gameover2.mp3',
     function (buffer){
       that.gameover.setBuffer(buffer);
       that.gameover.setLoop(false);
@@ -156,7 +151,7 @@ const tamanio_borde = 0.45;
       this.reproducido = true;
   }
 
-  // Función para el mute
+  // Función para el mute. Permite activar y desactivar los sonidos (gameover y musica)
   cambiarMusica(){
     if (this.sound.isPlaying)
     {
@@ -170,7 +165,7 @@ const tamanio_borde = 0.45;
     }
   }
 
-  // Play/Stop de la música
+  // Permite reiniciar la musica cuando se reinicia el juego.
   reiniciarMusica(){
     if (this.sound.isPlaying)
       this.sound.stop();
@@ -188,63 +183,49 @@ const tamanio_borde = 0.45;
   createCamera () {
     this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     
-    //this.camera.position.set (this.tamTableroX/2, this.tamTableroY/2, 22.5); //Colocarlo en el eje y para ver el mapa desde arriba
-    this.camera.position.set (8, 8, 22.5); //Colocarlo en el eje y para ver el mapa desde arriba
+    this.camera.position.set (this.tamTableroX/2, this.tamTableroY/2, 22.5); //Colocarlo en el eje y para ver el mapa desde arriba
 
-    //var look = new THREE.Vector3 (this.tamTableroX/2,this.tamTableroY/2,0);
     var look = new THREE.Vector3 (8,8,0);
 
-    this.camera.lookAt(look);
-    this.add (this.camera);
-    
     // Para el control de cámara usamos una clase que ya tiene implementado los movimientos de órbita
     this.cameraControl = new TrackballControls (this.camera, this.renderer.domElement);
     
+    /*
     // Se configuran las velocidades de los movimientos
     this.cameraControl.rotateSpeed = 5;
     this.cameraControl.zoomSpeed = -2;
     this.cameraControl.panSpeed = 0.5;
     // Debe orbitar con respecto al punto de mira de la cámara
     this.cameraControl.target = look;
-    
+    */
+
+    this.camera.lookAt(look);
+    this.add (this.camera);
   }
 
+  // Cámara que sigue a la serpiente
   createCamera2 () {
     this.camera2 = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     
-    //var look = new THREE.Vector3 (this.tamTableroX/2,this.tamTableroY/2,0);
-    var look = new THREE.Vector3 (8,8,0);
+    this.camera2.lookAt(this.snake.segmentosSnake[0].position.x+10, this.snake.segmentosSnake[0].position.y+55, -150);
 
-    //this.camera2.lookAt(look);
     this.add (this.camera2);
-    
-    // Para el control de cámara usamos una clase que ya tiene implementado los movimientos de órbita
-    this.camera2Control = new TrackballControls (this.camera2, this.renderer.domElement);
-    
-    // Se configuran las velocidades de los movimientos
-    this.camera2Control.rotateSpeed = 5;
-    this.camera2Control.zoomSpeed = -2;
-    this.camera2Control.panSpeed = 0.5;
-    // Debe orbitar con respecto al punto de mira de la cámara
-    this.camera2Control.target = look;
-    
   }
 
+  // Crea el tablero, sobre el que se ubicará todo
   createGround () {
     
-    // La geometría es una caja con muy poca altura
     var geometryGround = new THREE.BoxGeometry (this.tamTableroX,this.tamTableroY, 0.2); 
     
-    var texture = new THREE.TextureLoader().load('./Juego/Imagenes/cesped3.0.jpg');
+    var texture = new THREE.TextureLoader().load('./Imagenes/cesped3.0.jpg');
     var materialGround = new THREE.MeshPhongMaterial ({map: texture});
     
     this.ground = new THREE.Mesh (geometryGround, materialGround);
     
-    // El suelo lo bajamos la mitad de su altura para que el origen del mundo se quede en su lado superior
     this.ground.position.z = -0.1;
 
-    this.ground.position.x += this.tamTableroX/2;
-    this.ground.position.y += this.tamTableroY/2;
+    this.ground.position.x += this.tamTableroX/2; //Ponerlo encima de eje X
+    this.ground.position.y += this.tamTableroY/2; //Ponerlo a la derecha del eje Y
 
     this.add (this.ground);
   }
@@ -311,9 +292,9 @@ const tamanio_borde = 0.45;
     // Y si se cambia ese dato hay que actualizar la matriz de proyección de la cámara
     this.camera.updateProjectionMatrix();
   }
-    
+  
   onWindowResize () {
-    // Este método es llamado cada vez que el usuario modifica el tamapo de la ventana de la aplicación
+    // Este método es llamado cada vez que el usuario modifica el tamanio de la ventana de la aplicación
     // Hay que actualizar el ratio de aspecto de la cámara
     this.setCameraAspect (window.innerWidth / window.innerHeight);
     
@@ -334,7 +315,7 @@ const tamanio_borde = 0.45;
   leerTeclado (evento) {
     var x = evento.which || evento.keyCode; //Ver que tecla se pulsó
 
-    if(this.inicioJuego) //Si se ha iniciado el juego (y hay una snake), permitir que se pueda modificar la dirección del snake
+    if(this.inicioJuego) //Si se ha iniciado el juego, permitir modificar direccion, activar musica y pausar juego
     {
       if(x == '87'){ //Pulsar la W
         this.snake.cambiarDireccion(Direcciones.ARRIBA);
@@ -352,17 +333,17 @@ const tamanio_borde = 0.45;
       else if (x == '77') // Pulsar la M: activamos/desactivamos la musica
       this.cambiarMusica();
 
-      else if(x == '80'){ // Pulsar la P: pausa
-        this.pausa = !this.pausa;
+      else if(x == '80'){ // Pulsar la P: pausa/reanudar
+        this.pausa = !this.pausa; //Cambiar el modo previo de pausa
 
-        if (this.pausa)
+        if (this.pausa) //Si se pausa
         {
-          if (!this.muted)
+          if (!this.muted) //Si la musica estaba activada, pausala
             this.sound.pause();
-          this.setPausa("PAUSA");
+          this.setPausa("PAUSA"); //Pon mensaje de pausa
         }
-        else{
-          if (!this.muted)
+        else{ //Si se reanuda
+          if (!this.muted) //Si la musica estaba activada, reanudala
             this.sound.play();
           this.clearPausa();
         }
@@ -375,7 +356,7 @@ const tamanio_borde = 0.45;
     
     if(x == '82'){ // Pulsar la R. Permite iniciar y reiniciar el juego
 
-      //Si ya habia una partida antes, borrar las cosas que habia
+      //Si ya habia una partida antes, borrar las cosas que habia (frutas, snake y renderer)
       if (this.inicioJuego){ 
         this.snake.eliminarSerpiente();
         this.remove(this.snake); // Borrar de DOM
@@ -386,12 +367,14 @@ const tamanio_borde = 0.45;
         this.renderer.renderLists.dispose();
       }
 
-      if (!this.muted)
+      if (!this.muted) //Si estaba activada la musica, la reiniciamos
         this.reiniciarMusica();
       
       this.reproducido = false; // controla si se ha reproducido el sonido de gameover
 
+      //Borrar mensajes previos y poner los proximos
       this.clearMessage();
+      this.clearGameOver();
       this.clearTeclas();
       this.setMessage("Las posibles frutas son:");
       
@@ -413,14 +396,13 @@ const tamanio_borde = 0.45;
       this.setTeclas("R: reiniciar");
       
       this.inicioJuego = true;
-      this.snake = new Snake(this.tamTableroX, this.tamTableroY, this.numeroCasillasX, this.numeroCasillasY);
+      this.snake = new Snake(this.tamTableroX, this.tamTableroY, this.numeroCasillasX, this.numeroCasillasY); //crear snake
 
-      this.createCamera2();
-      this.camera2.lookAt(this.snake.segmentosSnake[0].position.x+10, this.snake.segmentosSnake[0].position.y+55, -150);
+      this.createCamera2(); //Crear la camara2 (la que sigue al snake ya que depende de este)
 
-      this.crearFrutas();
+      this.crearFrutas(); //Crear frutas
       
-      this.add(this.snake);
+      this.add(this.snake); //Añadir el snake
     }
   }
 
@@ -432,16 +414,18 @@ const tamanio_borde = 0.45;
   // RATON
   //////////////////////////////////////////////////
 
-  // Leer una posicion del
+  // Leer una posicion de la ventana
   leerRaton(evento){
 
     var objetos = [this.ground]; //Objetos seleccionables - El tablero sobre el que haremos click
 
     var mouse = new THREE.Vector2 ();
 
+    //Obtener poscicion del clic en coordenadas de dispositivo normalizado
     mouse.x = (evento.clientX / window.innerWidth) * 2 - 1;
     mouse.y = 1 - 2 * (evento.clientY / window.innerHeight);
 
+    //Se construye rayo que pasa por la posicion sobre la que se hizo clic, a partir de la camara inicial (la estática)
     var raycaster = new THREE.Raycaster ();
     raycaster.setFromCamera(mouse, this.camera);
 
@@ -458,11 +442,6 @@ const tamanio_borde = 0.45;
 
       var distancia_x = coordenada_x - this.snake.getColumnaCabeza(); //Distancia al punto que ha clickado 
       var distancia_y = coordenada_y - this.snake.getFilaCabeza();
-
-      /*
-      console.log("Distancia x:", distancia_x); 
-      console.log("Distancia y:", distancia_y); 
-      */
 
       // La serpiente irá a la dirección en la que haya más distancia
       // Destacamos que no se puede cambiar el sentido directamente debido a los condicionales del metodo CambiarDireccion
@@ -494,7 +473,7 @@ const tamanio_borde = 0.45;
   // COMIDA
   //////////////////////////////////////////////////
 
-  //Obtiene una celda random vacia, dado un limite de x y limite de y
+  //Obtiene una celda random vacia de la matriz, dado un limite de x y limite de y
   obtenerCeldaRandomVacia(max1, max2){
 
     do {
@@ -502,17 +481,18 @@ const tamanio_borde = 0.45;
       var pos_y = Math.floor(Math.random() * max2);
     } while (this.snake.getCeldaMatriz(pos_y, pos_x) != ValoresMatriz.VACIO); // obtener casilla aleatoria que no esté ocupada 
 
-    return {pos_x, pos_y}; // floor devuelve entero
+    return {pos_x, pos_y}; // Devolvemos vector con los índices de la celda
   }
 
-  // Si la cabeza del snake esta en una fruta, procesa su acción. Además borra la fruta actual, y crea otra en una posicion random
+  // Si la cabeza del snake esta en una fruta (o bomba), procesa su acción. Además borra la fruta actual, y crea otra en una posicion random
   procesarComida(){
     var fila_cabeza = this.snake.getFilaCabeza();
     var columna_cabeza = this.snake.getColumnaCabeza();
 
-    var casilla = this.snake.getCeldaMatriz(fila_cabeza, columna_cabeza);
-    var celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX);;
+    var casilla = this.snake.getCeldaMatriz(fila_cabeza, columna_cabeza); //Valor de la celda en la que esta ahora mismo el snake
+    var celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX); //genera una pos random
 
+    //En funcion de la fruta que haya, hacer la función correspondiente, marcar la casilla como ocupada por el snake y volver a crear la fruta
     if (casilla === ValoresMatriz.MANZANA){
         this.snake.incrementarTamanio();
         this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, ValoresMatriz.SERPIENTE); //Las serpiente se comio la fruta
@@ -557,7 +537,7 @@ const tamanio_borde = 0.45;
     }
   }
 
-  // Crea todas las frutas en posiciones aleatorias que no estén previamente ocupadas
+  // Crea TODAS las frutas en posiciones aleatorias que no estén ocupadas
   crearFrutas(){
 
     // NOTA IMPORTANTE: Recordamos que la y para nosotros son las filas y la x
@@ -578,7 +558,7 @@ const tamanio_borde = 0.45;
     this.crearBomba(celda.pos_y, celda.pos_x);
   }
   
-  //Elimina todas las frutas que hay en la escena. "Borrado en cascada"
+  //Elimina TODAS las frutas que hay en la escena. "Borrado en cascada"
   eliminarFrutas(){
       this.manzana.destruirManzana();
       this.remove(this.manzana);
@@ -656,16 +636,13 @@ const tamanio_borde = 0.45;
   update () {
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
-
-    // Se actualiza la posición de la cámara según su controlador
-    this.cameraControl.update(); 
-
-    if(this.inicioJuego) //Si ha iniciado, haz el update del snake
+    
+    if(this.inicioJuego) //Si ha iniciado, haz el update del snake y de lo demás
     {
-      if (!this.pausa)
+      if (!this.pausa) //Si no se ha pausado el juego
       {
 
-        if (this.cambio_camara)
+        if (this.cambio_camara) //Si hemos cambiado de camara, renderizarla
         {
           this.renderer.render (this, this.camera2);
           var offset = new THREE.Vector3(this.snake.segmentosSnake[0].position.x, this.snake.segmentosSnake[0].position.y-6, this.snake.segmentosSnake[0].position.z+14);
@@ -674,17 +651,13 @@ const tamanio_borde = 0.45;
           this.camera2.position.lerp(offset, 0.05);
         }
 
-        //this.target.set(this.snake.segmentosSnake[0].position.x, this.snake.segmentosSnake[0].position.y, this.snake.segmentosSnake[0].position.z);
-        //this.snake.segmentosSnake[0].getWorldPosition(this.target);
-        //this.camera.lookAt(this.target);
+        this.snake.update(); //Actualizar la serpiente
 
-        this.snake.update();
-
-        //Para evitar hacer get en una casilla fuera de índice y haya error por los indices
+        //if Para evitar hacer get en una casilla fuera de índice y haya error por los indices
         if(!this.snake.comprobarChoqueMuro(this.snake.getFilaCabeza(), this.snake.getColumnaCabeza())) 
           this.procesarComida(); //Si hay comida en la casilla, la procesa
         
-        if(this.snake.finPartida)
+        if(this.snake.finPartida) //Si es el fin de la partida
         {
           // Parar música del juego
           if (this.sound.isPlaying)
@@ -704,15 +677,6 @@ const tamanio_borde = 0.45;
   }
 }
 
-// Matriz de Snake con enteros
-// 0 - libre
-// 1 - serpiente
-// 2 - manzana
-// 3 - naranja
-// 4 - pera
-// 5 - uva
-// 6 - bomba
-
 // La función main
 $(function () {
   
@@ -722,7 +686,7 @@ $(function () {
   // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
   window.addEventListener ("resize", () => scene.onWindowResize());
   window.addEventListener ("keydown", (event) => scene.leerTeclado(event)); //Cuando se pulse la tecla, salta el listener
-  window.addEventListener ( "mousedown" , (event) => scene.leerRaton(event) ) ;
+  window.addEventListener ( "mousedown" , (event) => scene.leerRaton(event) ) ; //Cuando se pulse el raton, salta el listener
 
   // Que no se nos olvide, la primera visualización.
   scene.update();
@@ -737,7 +701,7 @@ var Direcciones = {
     IZQUIERDA: 3
 }
 
-// Representa el significado de un valor en la matriz del tablero.
+// Representa el significado de un valor en la matriz que representa el tablero.
 var ValoresMatriz = {
   VACIO: 0,
   SERPIENTE: 1,
