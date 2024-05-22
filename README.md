@@ -1,5 +1,5 @@
-# Snake3D
-Snake 3D hecho con Three JS junto a mi compañero David Correa Rodríguez (@wastedDavid)
+# 3DSnake
 
-Para jugar, se pueden descargar los ficheros y abrir un servidor con Python, o bien entrar al siguiente enlace: https://alvarovegaromero.github.io/Snake3D/
+3D Snake made with Three JS with my colleague David Correa Rodríguez (@davidcr01)
 
+In order to play, you can download the files and open a server with Python, or go to the following link: https://alvarovegaromero.github.io/Snake3D/
