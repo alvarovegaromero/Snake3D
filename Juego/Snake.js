@@ -50,7 +50,7 @@ class Snake extends THREE.Object3D{
 
         /////////////////////////////////////////////////////////////
         //Crear textura, geometria y material comun de la la serpiente
-        this.texture = new THREE.TextureLoader().load('./Juego/images/serpiente2.jpg');
+        this.texture = new THREE.TextureLoader().load('./Juego/images/snakeBody.jpg');
         this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
         this.texture.repeat.set( 0.3, 0.3 );
         this.texture.needsUpdate = true;
@@ -93,7 +93,7 @@ class Snake extends THREE.Object3D{
         this.geometria_cabeza.translate(0.4,0,0);
         this.geometria_cabeza.rotateY(-Math.PI/2);
 
-        var texture_cabeza = new THREE.TextureLoader().load('./Juego/images/cabeza.jpg');
+        var texture_cabeza = new THREE.TextureLoader().load('./Juego/images/snakeHead.jpg');
         texture_cabeza.repeat.set(2,1);
         var materiales_cabeza = [new THREE.MeshPhongMaterial({map: texture_cabeza}), new THREE.MeshPhongMaterial({map: this.texture}), new THREE.MeshPhongMaterial({map: this.texture})];
         

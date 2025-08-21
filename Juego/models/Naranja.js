@@ -38,7 +38,7 @@ class Naranja extends THREE.Object3D {
     // Un Mesh se compone de geometría y material
     var sphereGeom = new THREE.SphereGeometry( 1.5, 100, 100 ); //radio, paralelos y meridianos (norte a sur)
     // Como material se crea uno a partir de un color
-    var texture = new THREE.TextureLoader().load('./Juego/images/naranja.jpg'); //añadirle textura de naranja
+    var texture = new THREE.TextureLoader().load('./Juego/images/orange.jpg'); //añadirle textura de naranja
     var sphereMat = new THREE.MeshPhysicalMaterial({
       map: texture,
       roughness: 0,
@@ -52,8 +52,6 @@ class Naranja extends THREE.Object3D {
 
     return this.sphere;
   }
-
-  
   
   update () {
   }

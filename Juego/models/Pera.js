@@ -25,7 +25,7 @@ class Pera extends THREE.Object3D {
 
   createPera()
   {
-    var texture = new THREE.TextureLoader().load('./Juego/images/pera.jpg');
+    var texture = new THREE.TextureLoader().load('./Juego/images/pear.jpg');
     var material_pera = new THREE.MeshPhysicalMaterial({map: texture, roughness: 0, reflectivity: 0.35});
 
     var shapePera = new THREE.Shape();
