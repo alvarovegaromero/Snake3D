@@ -217,7 +217,7 @@ const tamanio_borde = 0.45;
     
     var geometryGround = new THREE.BoxGeometry (this.tamTableroX,this.tamTableroY, 0.2); 
     
-    var texture = new THREE.TextureLoader().load('./Juego/Imagenes/cesped3.0.jpg');
+    var texture = new THREE.TextureLoader().load('./Juego/images/cesped3.0.jpg');
     var materialGround = new THREE.MeshPhongMaterial ({map: texture});
     
     this.ground = new THREE.Mesh (geometryGround, materialGround);
