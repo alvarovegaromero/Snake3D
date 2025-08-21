@@ -7,11 +7,11 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 
 // Clases del proyecto
 
-import { Manzana } from './Modelos/Manzana.js'
-import { Uva } from './Modelos/Uva.js'
-import { Naranja } from './Modelos/Naranja.js'
-import { Pera } from './Modelos/Pera.js'
-import { Bomba } from './Modelos/Bomba.js'
+import { Manzana } from './models/Manzana.js'
+import { Uva } from './models/Uva.js'
+import { Naranja } from './models/Naranja.js'
+import { Pera } from './models/Pera.js'
+import { Bomba } from './models/Bomba.js'
 import { Snake } from './Snake.js'
 
 /*
