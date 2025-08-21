@@ -121,7 +121,7 @@ const tamanio_borde = 0.45;
     this.sound = new THREE.Audio(listener);
 
     const audioLoader = new THREE.AudioLoader();
-    audioLoader.load('./Juego/music/CancionSnake.mp3',
+    audioLoader.load('./code/music/CancionSnake.mp3',
     function (buffer){
       that.sound.setBuffer(buffer);
       that.sound.setLoop(true);
@@ -137,7 +137,7 @@ const tamanio_borde = 0.45;
     this.gameover = new THREE.Audio(listener);
 
     const audioLoader = new THREE.AudioLoader();
-    audioLoader.load('./Juego/music/gameover2.mp3',
+    audioLoader.load('./code/music/gameover2.mp3',
     function (buffer){
       that.gameover.setBuffer(buffer);
       that.gameover.setLoop(false);
@@ -217,7 +217,7 @@ const tamanio_borde = 0.45;
     
     var geometryGround = new THREE.BoxGeometry (this.tamTableroX,this.tamTableroY, 0.2); 
     
-    var texture = new THREE.TextureLoader().load('./Juego/images/grass.jpg');
+    var texture = new THREE.TextureLoader().load('./code/images/grass.jpg');
     var materialGround = new THREE.MeshPhongMaterial ({map: texture});
     
     this.ground = new THREE.Mesh (geometryGround, materialGround);

@@ -36,7 +36,7 @@ class Manzana extends THREE.Object3D {
 
   createManzana()
   {
-    var texture = new THREE.TextureLoader().load('./Juego/images/apple.jpg');
+    var texture = new THREE.TextureLoader().load('./code/images/apple.jpg');
     var material_manzana = new THREE.MeshPhysicalMaterial({map: texture, roughness: 0, reflectivity: 0.35});
 
     var shapeManzana = new THREE.Shape();
