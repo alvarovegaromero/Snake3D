@@ -1,6 +1,6 @@
 import * as THREE from '../libs/three.module.js'
-import {Direcciones} from './Escena.js'
-import {ValoresMatriz} from './Escena.js'
+import {Direcciones} from './scene.js'
+import {ValoresMatriz} from './scene.js'
 
 /*
 Apartados del fichero:
