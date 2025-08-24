@@ -121,7 +121,7 @@ const tamanio_borde = 0.45;
     this.sound = new THREE.Audio(listener);
 
     const audioLoader = new THREE.AudioLoader();
-    audioLoader.load('./code/music/CancionSnake.mp3',
+    audioLoader.load('./code/music/snake-song.mp3',
     function (buffer){
       that.sound.setBuffer(buffer);
       that.sound.setLoop(true);
@@ -137,7 +137,7 @@ const tamanio_borde = 0.45;
     this.gameover = new THREE.Audio(listener);
 
     const audioLoader = new THREE.AudioLoader();
-    audioLoader.load('./code/music/gameover2.mp3',
+    audioLoader.load('./code/music/gameover-sound.mp3',
     function (buffer){
       that.gameover.setBuffer(buffer);
       that.gameover.setLoop(false);
