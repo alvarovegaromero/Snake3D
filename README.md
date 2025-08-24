@@ -30,4 +30,4 @@ python -m http.server 8000  # you can replace 8000 with any port you prefer
 ```
 
 4. Open your browser and go to:
-[http://localhost:8000](http://localhost:8000)
+[http://localhost:8000/Snake3D/](http://localhost:8000/Snake3D/)
