@@ -12,7 +12,7 @@ import { Uva } from './models/Uva.js'
 import { Naranja } from './models/Naranja.js'
 import { Pera } from './models/Pera.js'
 import { Bomba } from './models/Bomba.js'
-import { Snake } from './Snake.js'
+import { Snake } from './snake.js'
 
 /*
 Apartados del fichero:
