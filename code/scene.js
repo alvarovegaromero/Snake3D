@@ -14,6 +14,8 @@ import { Pera } from './models/Pera.js'
 import { Bomba } from './models/Bomba.js'
 import { Snake } from './snake.js'
 
+import { loadTranslations } from './i18n.js';
+
 /*
 Apartados del fichero:
 - Mensajes
@@ -33,8 +35,10 @@ const tamanio_borde = 0.45;
  class MyScene extends THREE.Scene {
   // Recibe el  div  que se ha creado en el  html  que va a ser el lienzo en el que mostrar
   // la visualización de la escena
-  constructor (myCanvas) { 
+  constructor (myCanvas, translations) { 
     super();
+
+    this.translations = translations;
 
     // Incluye los bordes del tablero
     this.tamTableroX = 17;
@@ -376,24 +380,23 @@ const tamanio_borde = 0.45;
       this.clearMessage();
       this.clearGameOver();
       this.clearTeclas();
-      this.setMessage("Las posibles frutas son:");
-      
-      this.setMessage("-Manzana: Aumentar tamaño");
-      this.setMessage("-Pera: Aumentar velocidad");
 
-      this.setMessage("-Grape: Reduce size");
-      this.setMessage("-Naranja: Reducir velocidad");
-      this.setMessage("-Bomba: Game Over");
+      this.setMessage(this.translations["game-instructions"]);
 
-      this.setTeclas("W: arriba");
-      this.setTeclas("A: izquierda");
-      this.setTeclas("S: abajo");
-      this.setTeclas("D: derecha");
+      this.setMessage(this.translations["apple"]);
+      this.setMessage(this.translations["pear"]);
+      this.setMessage(this.translations["grape"]);
+      this.setMessage(this.translations["orange"]);
+      this.setMessage(this.translations["bomb"]);
 
-      this.setTeclas("C: cambiar cámara");
-      this.setTeclas("P: pausa");
-      this.setTeclas("M: iniciar/pausar música");
-      this.setTeclas("R: reiniciar");
+      this.setTeclas(this.translations["key-w"]);
+      this.setTeclas(this.translations["key-a"]);
+      this.setTeclas(this.translations["key-s"]);
+      this.setTeclas(this.translations["key-d"]);
+      this.setTeclas(this.translations["key-c"]);
+      this.setTeclas(this.translations["key-p"]);
+      this.setTeclas(this.translations["key-m"]);
+      this.setTeclas(this.translations["key-r"]);
       
       this.inicioJuego = true;
       this.snake = new Snake(this.tamTableroX, this.tamTableroY, this.numeroCasillasX, this.numeroCasillasY); //crear snake
@@ -676,18 +679,13 @@ const tamanio_borde = 0.45;
   }
 }
 
-// La función main
-$(function () {
-  
-  // Se instancia la escena pasándole el  div  que se ha creado en el html para visualizar
-  var scene = new MyScene("#WebGL-output");
+$(async function () {
+  const translations = await loadTranslations();
+  var scene = new MyScene("#WebGL-output", translations);
 
-  // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
   window.addEventListener ("resize", () => scene.onWindowResize());
-  window.addEventListener ("keydown", (event) => scene.leerTeclado(event)); //Cuando se pulse la tecla, salta el listener
-  window.addEventListener ( "mousedown" , (event) => scene.leerRaton(event) ) ; //Cuando se pulse el raton, salta el listener
-
-  // Que no se nos olvide, la primera visualización.
+  window.addEventListener ("keydown", (event) => scene.leerTeclado(event));
+  window.addEventListener ("mousedown", (event) => scene.leerRaton(event));
   scene.update();
 });
 

@@ -1,0 +1,16 @@
+{
+  "game-instructions": "Las posibles frutas son",
+  "apple": "Manzana: Aumentar tamaño",
+  "pear": "Pera: Aumentar velocidad",
+  "grape": "Uva: Reducir tamaño",
+  "orange": "Naranja: Reducir velocidad",
+  "bomb": "Bomba: Fin del juego",
+  "key-w": "W: arriba",
+  "key-a": "A: izquierda",
+  "key-s": "S: abajo",
+  "key-d": "D: derecha",
+  "key-c": "C: cambiar cámara",
+  "key-p": "P: pausa",
+  "key-m": "M: iniciar/pausar música",
+  "key-r": "R: reiniciar"
+}

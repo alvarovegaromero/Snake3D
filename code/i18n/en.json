@@ -1,0 +1,16 @@
+{
+  "game-instructions": "Possible fruits are:",
+  "apple": "-Apple: Increase size",
+  "pear": "-Pear: Increase speed",
+  "grape": "Grape: Reduce size",
+  "orange": "-Orange: Reduce speed",
+  "bomb": "-Bomb: Game Over",
+  "key-w": "W: up",
+  "key-a": "A: left",
+  "key-s": "S: down",
+  "key-d": "D: right",
+  "key-c": "C: change camera",
+  "key-p": "P: pause",
+  "key-m": "M: start/pause music",
+  "key-r": "R: restart"
+}
