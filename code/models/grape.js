@@ -1,25 +1,22 @@
 import * as THREE from '../../libs/three.module.js'
-//import { Pedunculo } from './Pedunculo.js'
 
-class Uva extends THREE.Object3D {
+class Grape extends THREE.Object3D {
   constructor(gui,titleGui) {
     super();
     
-    this.uva = this.createUva(); //Uva realmente es un racimo de uvas
+    this.grape = this.createGrape(); //Grape realmente es un racimo de uvas
 
-    this.uva_final = new THREE.Object3D();
-    this.uva_final.add(this.uva);
+    this.grape_final = new THREE.Object3D();
+    this.grape_final.add(this.grape);
 
-    this.uva_final.scale.set(0.5, 0.5, 0.5);
-    this.uva_final.rotateX(Math.PI/2);
-    this.uva_final.position.set(0.92,0.92,0);
-    
+    this.grape_final.scale.set(0.5, 0.5, 0.5);
+    this.grape_final.rotateX(Math.PI/2);
+    this.grape_final.position.set(0.92,0.92,0);
 
-    this.add (this.uva_final);
+    this.add (this.grape_final);
   }
 
-  createUva()
-  {
+  createGrape() {
     // Un Mesh se compone de geometría y material
     var sphereGeom = new THREE.SphereGeometry( 1.5, 100, 100 ); //radio, paralelos y meridianos (norte a sur)
     // Como material se crea uno a partir de un color
@@ -43,7 +40,7 @@ class Uva extends THREE.Object3D {
     return this.sphere;
   }
 
-  destruirUva(){
+  destroyGrape(){
     this.uva.geometry.dispose();
     this.uva.material.dispose();
 
@@ -52,9 +49,7 @@ class Uva extends THREE.Object3D {
     this.remove(this.uva);
   }
   
-  
-  update () {
-  }
+  update () {}
 }
 
-export { Uva }
+export { Grape }

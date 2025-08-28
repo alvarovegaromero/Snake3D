@@ -8,7 +8,7 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 // Clases del proyecto
 
 import { Manzana } from './models/Manzana.js'
-import { Uva } from './models/Uva.js'
+import { Grape } from './models/grape.js'
 import { Naranja } from './models/Naranja.js'
 import { Pera } from './models/Pera.js'
 import { Bomba } from './models/Bomba.js'
@@ -381,7 +381,7 @@ const tamanio_borde = 0.45;
       this.setMessage("-Manzana: Aumentar tamaño");
       this.setMessage("-Pera: Aumentar velocidad");
 
-      this.setMessage("-Uva: Reducir tamaño");
+      this.setMessage("-Grape: Reduce size");
       this.setMessage("-Naranja: Reducir velocidad");
       this.setMessage("-Bomba: Game Over");
 
@@ -502,13 +502,13 @@ const tamanio_borde = 0.45;
         this.crearManzana(celda.pos_y, celda.pos_x);
     }
 
-    else if (casilla === ValoresMatriz.UVA){
+    else if (casilla === ValoresMatriz.GRAPE){
       this.snake.decrementarTamanio();
       this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, ValoresMatriz.SERPIENTE);
-      this.uva.destruirUva();
-      this.remove(this.uva);
+      this.grape.destroyGrape();
+      this.remove(this.grape);
 
-      this.crearUva(celda.pos_y, celda.pos_x);
+      this.createGrape(celda.pos_y, celda.pos_x);
     }
 
     else if (casilla === ValoresMatriz.PERA){
@@ -549,7 +549,7 @@ const tamanio_borde = 0.45;
     this.crearPera(celda.pos_y, celda.pos_x);
 
     celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX);
-    this.crearUva(celda.pos_y, celda.pos_x);
+    this.createGrape(celda.pos_y, celda.pos_x);
 
     celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX);
     this.crearNaranja(celda.pos_y, celda.pos_x);
@@ -566,8 +566,8 @@ const tamanio_borde = 0.45;
       this.pera.destruirPera();
       this.remove(this.pera);
 
-      this.uva.destruirUva();
-      this.remove(this.uva);
+      this.grape.destroyGrape();
+      this.remove(this.grape);
 
       this.naranja.destruirNaranja();
       this.remove(this.naranja);
@@ -588,14 +588,13 @@ const tamanio_borde = 0.45;
     this.add (this.manzana);
   }
 
-  //Creamos en la posición real, dada una fila y columna de la matriz determinada, la uva. También marcamos en la matriz que hay una uva
-  crearUva(fila, columna){
-    this.snake.setCeldaMatriz(fila, columna, ValoresMatriz.UVA);
+  createGrape(fila, columna){
+    this.snake.setCeldaMatriz(fila, columna, ValoresMatriz.GRAPE);
 
-    this.uva = new Uva();
-    this.uva.position.set(factor_conversion_mapa*columna, factor_conversion_mapa*fila, 0);
+    this.grape = new Grape();
+    this.grape.position.set(factor_conversion_mapa * columna, factor_conversion_mapa * fila, 0);
 
-    this.add (this.uva);
+    this.add (this.grape);
   }
 
   //Creamos en la posición real, dada una fila y columna de la matriz determinada, la pera. También marcamos en la matriz que hay una pera
@@ -708,7 +707,7 @@ var ValoresMatriz = {
   MANZANA: 2,
   NARANJA: 3,
   PERA: 4,
-  UVA : 5,
+  GRAPE : 5,
   BOMBA : 6
 }
 
