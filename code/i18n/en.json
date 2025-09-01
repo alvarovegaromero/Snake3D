@@ -12,5 +12,8 @@
   "key-c": "C: change camera",
   "key-p": "P: pause",
   "key-m": "M: start/pause music",
-  "key-r": "R: restart"
+  "key-r": "R: restart",
+  "start": "Press R to start the game",
+  "credits": "Created by: David Correa and Álvaro Vega",
+  "reload": "Press R to restart"
 }

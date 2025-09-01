@@ -65,8 +65,8 @@ const tamanio_borde = 0.45;
     this.reproducido = false; // Controla si se ha reproducido el sonido de gameover
 
     this.clearMessage();
-    this.setMessage("Pulsa R para iniciar el juego"); //Mensajes iniciales del juego
-    this.setMessage("Creado por: David Correa y Álvaro Vega");
+    this.setMessage(this.translations["start"]);
+    this.setMessage(this.translations["credits"]);
   }
 
   //////////////////////////////////////////////////

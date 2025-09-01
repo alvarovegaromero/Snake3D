@@ -12,5 +12,8 @@
   "key-c": "C: cambiar cámara",
   "key-p": "P: pausa",
   "key-m": "M: iniciar/pausar música",
-  "key-r": "R: reiniciar"
+  "key-r": "R: reiniciar,",
+  "start": "Pulsa R para iniciar el juego",
+  "credits": "Creado por: David Correa y Álvaro Vega",
+  "reload": "Pulsa R para reiniciar"
 }
