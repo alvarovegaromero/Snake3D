@@ -11,7 +11,7 @@ import { Manzana } from './models/Manzana.js'
 import { Grape } from './models/grape.js'
 import { Naranja } from './models/Naranja.js'
 import { Pera } from './models/Pera.js'
-import { Bomba } from './models/Bomba.js'
+import { Bomb } from './models/Bomb.js'
 import { Snake } from './snake.js'
 
 import { loadTranslations } from './i18n.js';
@@ -487,7 +487,7 @@ const tamanio_borde = 0.45;
     return {pos_x, pos_y}; // Devolvemos vector con los índices de la celda
   }
 
-  // Si la cabeza del snake esta en una fruta (o bomba), procesa su acción. Además borra la fruta actual, y crea otra en una posicion random
+  // Si la cabeza del snake esta en una fruta (o bomb), procesa su acción. Además borra la fruta actual, y crea otra en una posicion random
   procesarComida(){
     var fila_cabeza = this.snake.getFilaCabeza();
     var columna_cabeza = this.snake.getColumnaCabeza();
@@ -532,11 +532,11 @@ const tamanio_borde = 0.45;
       this.crearNaranja(celda.pos_y, celda.pos_x);
     }
 
-    else if (casilla === ValoresMatriz.BOMBA){
+    else if (casilla === ValoresMatriz.BOMB){
       this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, ValoresMatriz.SERPIENTE);
       this.snake.perderJuego();
-      this.bomba.destruirBomba();
-      this.remove(this.bomba);
+      this.bomb.destruirBomb();
+      this.remove(this.bomb);
     }
   }
 
@@ -558,7 +558,7 @@ const tamanio_borde = 0.45;
     this.crearNaranja(celda.pos_y, celda.pos_x);
 
     celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX);
-    this.crearBomba(celda.pos_y, celda.pos_x);
+    this.crearBomb(celda.pos_y, celda.pos_x);
   }
   
   //Elimina TODAS las frutas que hay en la escena. "Borrado en cascada"
@@ -575,8 +575,8 @@ const tamanio_borde = 0.45;
       this.naranja.destruirNaranja();
       this.remove(this.naranja);
 
-      this.bomba.destruirBomba();
-      this.remove(this.bomba);
+      this.bomb.destruirBomb();
+      this.remove(this.bomb);
   }
 
   //Creamos en la posición real, dada una fila y columna de la matriz determinada, la manzana. También marcamos en la matriz que hay una manzana
@@ -610,14 +610,14 @@ const tamanio_borde = 0.45;
     this.add(this.pera);
   }
 
-  //Creamos en la posición real, dada una fila y columna de la matriz determinada, la bomba. También marcamos en la matriz que hay una bomba
-  crearBomba(fila, columna){
-    this.snake.setCeldaMatriz(fila, columna, ValoresMatriz.BOMBA);
+  //Creamos en la posición real, dada una fila y columna de la matriz determinada, la bomb. También marcamos en la matriz que hay una bomb
+  crearBomb(fila, columna){
+    this.snake.setCeldaMatriz(fila, columna, ValoresMatriz.BOMB);
 
-    this.bomba = new Bomba();
-    this.bomba.position.set(factor_conversion_mapa*columna, factor_conversion_mapa*fila, 0);
+    this.bomb = new Bomb();
+    this.bomb.position.set(factor_conversion_mapa*columna, factor_conversion_mapa*fila, 0);
 
-    this.add(this.bomba);
+    this.add(this.bomb);
   }
 
   //Creamos en la posición real, dada una fila y columna de la matriz determinada, la naranja. También marcamos en la matriz que hay una naranja
@@ -706,7 +706,7 @@ var ValoresMatriz = {
   NARANJA: 3,
   PERA: 4,
   GRAPE : 5,
-  BOMBA : 6
+  BOMB : 6
 }
 
 export { Direcciones, ValoresMatriz}
