@@ -418,7 +418,8 @@ const tamanio_borde = 0.45;
   //////////////////////////////////////////////////
 
   // Leer una posicion de la ventana
-  leerRaton(evento){
+  leerRaton(evento) {
+    if (!this.inicioJuego || !this.snake) return;  // Prevent access if game not started
 
     var objetos = [this.ground]; //Objetos seleccionables - El tablero sobre el que haremos click
 
@@ -535,14 +536,13 @@ const tamanio_borde = 0.45;
     else if (casilla === ValoresMatriz.BOMB){
       this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, ValoresMatriz.SERPIENTE);
       this.snake.perderJuego();
-      this.bomb.destruirBomb();
+      this.bomb.destroyBomb();
       this.remove(this.bomb);
     }
   }
 
   // Crea TODAS las frutas en posiciones aleatorias que no estén ocupadas
   crearFrutas(){
-
     // NOTA IMPORTANTE: Recordamos que la y para nosotros son las filas y la x
     // son las columnas, por eso invertimos los parámetros
     var celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX);
@@ -558,7 +558,7 @@ const tamanio_borde = 0.45;
     this.crearNaranja(celda.pos_y, celda.pos_x);
 
     celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX);
-    this.crearBomb(celda.pos_y, celda.pos_x);
+    this.createBomb(celda.pos_y, celda.pos_x);
   }
   
   //Elimina TODAS las frutas que hay en la escena. "Borrado en cascada"
@@ -575,7 +575,7 @@ const tamanio_borde = 0.45;
       this.naranja.destruirNaranja();
       this.remove(this.naranja);
 
-      this.bomb.destruirBomb();
+      this.bomb.destroyBomb();
       this.remove(this.bomb);
   }
 
@@ -611,7 +611,7 @@ const tamanio_borde = 0.45;
   }
 
   //Creamos en la posición real, dada una fila y columna de la matriz determinada, la bomb. También marcamos en la matriz que hay una bomb
-  crearBomb(fila, columna){
+  createBomb(fila, columna){
     this.snake.setCeldaMatriz(fila, columna, ValoresMatriz.BOMB);
 
     this.bomb = new Bomb();

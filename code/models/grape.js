@@ -4,7 +4,7 @@ class Grape extends THREE.Object3D {
   constructor(gui,titleGui) {
     super();
     
-    this.grape = this.createGrape(); //Grape realmente es un racimo de uvas
+    this.grape = this.createGrape(); //Grape realmente es un racimo de grapes
 
     this.grape_final = new THREE.Object3D();
     this.grape_final.add(this.grape);
@@ -41,15 +41,13 @@ class Grape extends THREE.Object3D {
   }
 
   destroyGrape(){
-    this.uva.geometry.dispose();
-    this.uva.material.dispose();
+    this.grape.geometry.dispose();
+    this.grape.material.dispose();
 
-    this.remove(this.uva);
-    this.remove(this.uva_final);
-    this.remove(this.uva);
+    this.remove(this.grape);
+    this.remove(this.grape_final);
+    this.remove(this.grape);
   }
-  
-  update () {}
 }
 
 export { Grape }

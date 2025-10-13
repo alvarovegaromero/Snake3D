@@ -9,21 +9,21 @@ class Bomb extends THREE.Object3D {
     // Se crea el pedunculo, pero no se añade a la escena, solamente se crea un mesh resultante de geometría y material
     this.pedunculo = new Pedunculo(color);
     this.pedunculo.meshPedunculo.scale.set(0.75,1,0.75);
-    this.pedunculo.meshPedunculo.position.y = 2.5;  // subir el rabo
+    this.pedunculo.meshPedunculo.position.y = 2.5; // subir el rabo
 
     this.bomb = this.createBomb();
 
-    this.bombEntera = new THREE.Object3D();       // crear la manzana como el conjunto de la propia manzana y su rabo
+    this.bombEntera = new THREE.Object3D(); // crear la bomba como el conjunto de la propia bomba y su mecha
     this.bombEntera.add(this.bomb, this.pedunculo.meshPedunculo);
 
     this.bombEntera.scale.set(0.3, 0.3, 0.3);
     this.bombEntera.rotateX(Math.PI/2);
     this.bombEntera.position.set(0.94,0.94,0);
 
-    this.add (this.bombaEntera);
+    this.add(this.bombEntera);
   }
 
-  createBomba()
+  createBomb()
   {
     var material_bomb = new THREE.MeshPhysicalMaterial({color: 0x1e1f1f, roughness: 0, reflectivity: 0.9});
 
@@ -50,25 +50,22 @@ class Bomb extends THREE.Object3D {
     var geoBomb = new THREE.LatheGeometry(this.puntos, 24, 0, 2 * Math.PI); //Array de perfil, segmentos, angulo inicial y longitud del gir
     //Me apetecia hacer la esfera con puntos porque soy un chulo sorry xd
 
-    var bomb = new THREE.Mesh(geoBomb, material_bomba);
+    var bomb = new THREE.Mesh(geoBomb, material_bomb);
     bomb.position.y += 1.5;
 
     return bomb;
   }
 
-  destruirBomb(){
+  destroyBomb(){
     this.bomb.geometry.dispose();
     this.bomb.material.dispose();
 
     this.pedunculo.meshPedunculo.geometry.dispose();
     this.pedunculo.meshPedunculo.material.dispose();
 
-    this.remove(this.bomba);
+    this.remove(this.bomb);
     this.remove(this.pedunculo);
-    this.remove(this.bombaEntera);
-  }
-  
-  update () {
+    this.remove(this.bombEntera);
   }
 }
 
