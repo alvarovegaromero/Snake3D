@@ -13,6 +13,8 @@ import { Naranja } from './models/Naranja.js'
 import { Pera } from './models/Pera.js'
 import { Bomb } from './models/Bomb.js'
 import { Snake } from './snake.js'
+import { Directions } from './constants/directions.js'
+import { BoardValues } from './constants/board-values.js'
 
 import { loadTranslations } from './i18n.js';
 
@@ -322,16 +324,16 @@ const tamanio_borde = 0.45;
     if(this.inicioJuego) //Si se ha iniciado el juego, permitir modificar direccion, activar musica y pausar juego
     {
       if(x == '87'){ //Pulsar la W
-        this.snake.cambiarDireccion(Direcciones.ARRIBA);
+        this.snake.cambiarDireccion(Directions.ARRIBA);
       }
       else if(x == '83'){ //Pulsar la S
-        this.snake.cambiarDireccion(Direcciones.ABAJO);
+        this.snake.cambiarDireccion(Directions.ABAJO);
       }
       else if(x == '65'){ //Pulsar la A
-        this.snake.cambiarDireccion(Direcciones.IZQUIERDA);
+        this.snake.cambiarDireccion(Directions.IZQUIERDA);
       }
       else if(x == '68'){ // Pulsar la D
-        this.snake.cambiarDireccion(Direcciones.DERECHA);
+        this.snake.cambiarDireccion(Directions.DERECHA);
       }
 
       else if (x == '77') // Pulsar la M: activamos/desactivamos la musica
@@ -453,17 +455,17 @@ const tamanio_borde = 0.45;
       if(Math.abs(distancia_x) > Math.abs(distancia_y)) // Si la distancia de X es mayor que Y. Iremos a la izq o dcha
       {
         if(distancia_x > 0) //Si la diferencia es positiva, la posicion marcada esta a la derecha
-          this.snake.cambiarDireccion(Direcciones.DERECHA);
+          this.snake.cambiarDireccion(Directions.DERECHA);
         else
-          this.snake.cambiarDireccion(Direcciones.IZQUIERDA);
+          this.snake.cambiarDireccion(Directions.IZQUIERDA);
       }
 
       else if (Math.abs(distancia_x) < Math.abs(distancia_y)) // Si la distancia de X es mayor que Y. Iremos arriba o abajo
       {
         if(distancia_y > 0) //Si la diferencia es positiva, la posicion marcada esta arriba
-          this.snake.cambiarDireccion(Direcciones.ARRIBA);
+          this.snake.cambiarDireccion(Directions.ARRIBA);
         else
-          this.snake.cambiarDireccion(Direcciones.ABAJO);
+          this.snake.cambiarDireccion(Directions.ABAJO);
       }
       //En caso de empate entre distancias, no hacemos nada
     }
@@ -483,7 +485,7 @@ const tamanio_borde = 0.45;
     do {
       var pos_x = Math.floor(Math.random() * max1);
       var pos_y = Math.floor(Math.random() * max2);
-    } while (this.snake.getCeldaMatriz(pos_y, pos_x) != ValoresMatriz.VACIO); // obtener casilla aleatoria que no esté ocupada 
+    } while (this.snake.getCeldaMatriz(pos_y, pos_x) != BoardValues.VACIO); // obtener casilla aleatoria que no esté ocupada 
 
     return {pos_x, pos_y}; // Devolvemos vector con los índices de la celda
   }
@@ -497,44 +499,44 @@ const tamanio_borde = 0.45;
     var celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX); //genera una pos random
 
     //En funcion de la fruta que haya, hacer la función correspondiente, marcar la casilla como ocupada por el snake y volver a crear la fruta
-    if (casilla === ValoresMatriz.MANZANA){
+    if (casilla === BoardValues.MANZANA){
         this.snake.incrementarTamanio();
-        this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, ValoresMatriz.SERPIENTE); //Las serpiente se comio la fruta
+        this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SERPIENTE); //Las serpiente se comio la fruta
         this.manzana.destruirManzana();
         this.remove(this.manzana);
 
         this.crearManzana(celda.pos_y, celda.pos_x);
     }
 
-    else if (casilla === ValoresMatriz.GRAPE){
+    else if (casilla === BoardValues.GRAPE){
       this.snake.decrementarTamanio();
-      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, ValoresMatriz.SERPIENTE);
+      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SERPIENTE);
       this.grape.destroyGrape();
       this.remove(this.grape);
 
       this.createGrape(celda.pos_y, celda.pos_x);
     }
 
-    else if (casilla === ValoresMatriz.PERA){
+    else if (casilla === BoardValues.PERA){
       this.snake.aumentarVelocidad();
-      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, ValoresMatriz.SERPIENTE);
+      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SERPIENTE);
       this.pera.destruirPera();
       this.remove(this.pera);
 
       this.crearPera(celda.pos_y, celda.pos_x);
     }
 
-    else if (casilla === ValoresMatriz.NARANJA){
+    else if (casilla === BoardValues.NARANJA){
       this.snake.reducirVelocidad();
-      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, ValoresMatriz.SERPIENTE);
+      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SERPIENTE);
       this.naranja.destruirNaranja();
       this.remove(this.naranja);
 
       this.crearNaranja(celda.pos_y, celda.pos_x);
     }
 
-    else if (casilla === ValoresMatriz.BOMB){
-      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, ValoresMatriz.SERPIENTE);
+    else if (casilla === BoardValues.BOMB){
+      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SERPIENTE);
       this.snake.perderJuego();
       this.bomb.destroyBomb();
       this.remove(this.bomb);
@@ -582,7 +584,7 @@ const tamanio_borde = 0.45;
   //Creamos en la posición real, dada una fila y columna de la matriz determinada, la manzana. También marcamos en la matriz que hay una manzana
   crearManzana(fila, columna){
     // Reflejar en la matriz que se ha añadido la fruta
-    this.snake.setCeldaMatriz(fila, columna, ValoresMatriz.MANZANA);
+    this.snake.setCeldaMatriz(fila, columna, BoardValues.MANZANA);
 
     this.manzana = new Manzana();
     
@@ -592,7 +594,7 @@ const tamanio_borde = 0.45;
   }
 
   createGrape(fila, columna){
-    this.snake.setCeldaMatriz(fila, columna, ValoresMatriz.GRAPE);
+    this.snake.setCeldaMatriz(fila, columna, BoardValues.GRAPE);
 
     this.grape = new Grape();
     this.grape.position.set(factor_conversion_mapa * columna, factor_conversion_mapa * fila, 0);
@@ -602,7 +604,7 @@ const tamanio_borde = 0.45;
 
   //Creamos en la posición real, dada una fila y columna de la matriz determinada, la pera. También marcamos en la matriz que hay una pera
   crearPera(fila, columna){
-    this.snake.setCeldaMatriz(fila, columna, ValoresMatriz.PERA);
+    this.snake.setCeldaMatriz(fila, columna, BoardValues.PERA);
 
     this.pera = new Pera();
     this.pera.position.set(factor_conversion_mapa*columna, factor_conversion_mapa*fila, 0);
@@ -612,7 +614,7 @@ const tamanio_borde = 0.45;
 
   //Creamos en la posición real, dada una fila y columna de la matriz determinada, la bomb. También marcamos en la matriz que hay una bomb
   createBomb(fila, columna){
-    this.snake.setCeldaMatriz(fila, columna, ValoresMatriz.BOMB);
+    this.snake.setCeldaMatriz(fila, columna, BoardValues.BOMB);
 
     this.bomb = new Bomb();
     this.bomb.position.set(factor_conversion_mapa*columna, factor_conversion_mapa*fila, 0);
@@ -622,7 +624,7 @@ const tamanio_borde = 0.45;
 
   //Creamos en la posición real, dada una fila y columna de la matriz determinada, la naranja. También marcamos en la matriz que hay una naranja
   crearNaranja(fila, columna){
-    this.snake.setCeldaMatriz(fila, columna, ValoresMatriz.NARANJA);
+    this.snake.setCeldaMatriz(fila, columna, BoardValues.NARANJA);
 
     this.naranja = new Naranja();
     this.naranja.position.set(factor_conversion_mapa*columna, factor_conversion_mapa*fila, 0);
@@ -688,25 +690,3 @@ $(async function () {
   window.addEventListener ("mousedown", (event) => scene.leerRaton(event));
   scene.update();
 });
-
-///////////////////////////////
-// Enumerado para gestionar las direcciones del Snake
-var Direcciones = {
-    ARRIBA: 0,
-    DERECHA: 1,
-    ABAJO: 2,
-    IZQUIERDA: 3
-}
-
-// Representa el significado de un valor en la matriz que representa el tablero.
-var ValoresMatriz = {
-  VACIO: 0,
-  SERPIENTE: 1,
-  MANZANA: 2,
-  NARANJA: 3,
-  PERA: 4,
-  GRAPE : 5,
-  BOMB : 6
-}
-
-export { Direcciones, ValoresMatriz}

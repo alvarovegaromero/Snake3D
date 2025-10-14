@@ -1,6 +1,6 @@
 import * as THREE from '../libs/three.module.js'
-import {Direcciones} from './scene.js'
-import {ValoresMatriz} from './scene.js'
+import { Directions } from './constants/directions.js'
+import { BoardValues } from './constants/board-values.js'
 
 /*
 Apartados del fichero:
@@ -32,7 +32,7 @@ class Snake extends THREE.Object3D{
 
         ///////////////////////////////
         // Propiedades iniciales de la serpiente
-        this.direccion = Direcciones.ARRIBA; // Inicialmente, la serpiente empieza mirando a la derecha
+        this.direccion = Directions.ARRIBA; // Inicialmente, la serpiente empieza mirando a la derecha
         this.velocidadSerpiente = 5; //Velocidad de la serpiente
         
         ///////////////////////////////
@@ -106,7 +106,7 @@ class Snake extends THREE.Object3D{
         this.segmentosSnake.push(cabeza); //Metemos la cabeza lo primero
 
         //Marcamos la pos inicial como ocupada
-        this.matriz[this.conviertePosicionEnIndice(cabeza.position.y)][this.conviertePosicionEnIndice(cabeza.position.x)] = ValoresMatriz.SERPIENTE; 
+        this.matriz[this.conviertePosicionEnIndice(cabeza.position.y)][this.conviertePosicionEnIndice(cabeza.position.x)] = BoardValues.SERPIENTE; 
     
   
     }
@@ -159,14 +159,14 @@ class Snake extends THREE.Object3D{
             this.matriz[i] = new Array(this.tamMatrizX);
 
             for(var j = 0 ; j < this.tamMatrizX ; j++){
-                this.matriz[i][j] = ValoresMatriz.VACIO;
+                this.matriz[i][j] = BoardValues.VACIO;
             }
         }
     }
 
     // Comprueba si una casilla de la matriz está ya ocupada por la serpiente. Si lo está, detectamos que ha habido un choque
     comprobarCasillaOcupada(fila, columna){
-        if(this.matriz[fila][columna] === ValoresMatriz.SERPIENTE)
+        if(this.matriz[fila][columna] === BoardValues.SERPIENTE)
             return true;
         else //Si esta vacía o hay frutas, no hacer nada. Las frutas se procesan en la escena
             return false;
@@ -185,8 +185,8 @@ class Snake extends THREE.Object3D{
     //Comprueba si en la posición hay alguna fruta. Si hay, devuelve true
     comprobarPosicionFrutas(fila, columna){
         if(
-            (this.getCeldaMatriz(fila, columna) !== ValoresMatriz.VACIO) && 
-            (this.getCeldaMatriz(fila, columna) !== ValoresMatriz.SERPIENTE)
+            (this.getCeldaMatriz(fila, columna) !== BoardValues.VACIO) && 
+            (this.getCeldaMatriz(fila, columna) !== BoardValues.SERPIENTE)
         )
             return true; //Si lo que hay no es vacio ni snake, es una fruta
         else
@@ -233,7 +233,7 @@ class Snake extends THREE.Object3D{
             this.perderJuego();
         //Por ultimo, si no es una posicion de fruta o bomba (procesada en escena en caso de que lo fuera), marcarla como ocupada por la serpiente
         else if(!this.comprobarPosicionFrutas(fila_cabeza, columna_cabeza)) 
-            this.matriz[fila_cabeza][columna_cabeza] = ValoresMatriz.SERPIENTE;   
+            this.matriz[fila_cabeza][columna_cabeza] = BoardValues.SERPIENTE;   
     }
 
     //Permite cambiar la dirección a la que se dirige el snake
@@ -252,22 +252,22 @@ class Snake extends THREE.Object3D{
         if (this.direccion!=direccion_elegida) // Si la direccion marcada es diferente a la previa, procesarla
         {
 
-            if (this.direccion == Direcciones.ARRIBA && direccion_elegida != Direcciones.ABAJO) {
+            if (this.direccion == Directions.ARRIBA && direccion_elegida != Directions.ABAJO) {
                 this.direccion = direccion_elegida;
                 cambio = true;
             }
                 
-            else if (this.direccion == Direcciones.DERECHA && direccion_elegida != Direcciones.IZQUIERDA) {
+            else if (this.direccion == Directions.DERECHA && direccion_elegida != Directions.IZQUIERDA) {
                 this.direccion = direccion_elegida;
                 cambio = true;
             }
                 
-            else if (this.direccion == Direcciones.ABAJO && direccion_elegida != Direcciones.ARRIBA) {
+            else if (this.direccion == Directions.ABAJO && direccion_elegida != Directions.ARRIBA) {
                 this.direccion = direccion_elegida;
                 cambio = true;
             }
                 
-            else if (this.direccion == Direcciones.IZQUIERDA && direccion_elegida != Direcciones.DERECHA) {
+            else if (this.direccion == Directions.IZQUIERDA && direccion_elegida != Directions.DERECHA) {
                 this.direccion = direccion_elegida;
                 cambio = true;
             }
@@ -276,13 +276,13 @@ class Snake extends THREE.Object3D{
             if (cambio){
                 var cabeza = this.segmentosSnake[0];
 
-                if (this.direccion==Direcciones.DERECHA)
+                if (this.direccion==Directions.DERECHA)
                     cabeza.rotation.z -= Math.PI/2;
-                else if (this.direccion==Direcciones.IZQUIERDA)
+                else if (this.direccion==Directions.IZQUIERDA)
                     cabeza.rotation.z += Math.PI/2;
-                else if (this.direccion==Direcciones.ARRIBA)
+                else if (this.direccion==Directions.ARRIBA)
                     cabeza.rotation.z += Math.PI/2;
-                else if (this.direccion==Direcciones.ABAJO)
+                else if (this.direccion==Directions.ABAJO)
                     cabeza.rotation.z -= Math.PI/2;   
             }
         }
@@ -306,7 +306,7 @@ class Snake extends THREE.Object3D{
         // Si en la ultima iteraccion no se creo un segmento, marcar como vacio la posicion donde estaba la cola.
         // Si se creó, esa posicion es la que ocupa el ultimo segmento creado
         if(!this.hecreadosegmento) 
-            this.matriz[this.conviertePosicionEnIndice(cola.position.y)][this.conviertePosicionEnIndice(cola.position.x)] = ValoresMatriz.VACIO; 
+            this.matriz[this.conviertePosicionEnIndice(cola.position.y)][this.conviertePosicionEnIndice(cola.position.x)] = BoardValues.VACIO; 
 
         // Desplazar los segmentos "a la izquierda" del vector, haciendo que sigan al siguiente segmento hasta la cabeza y adoptando su orientación
         for(var i = this.segmentosSnake.length-1; i > 0; i--){
@@ -317,16 +317,16 @@ class Snake extends THREE.Object3D{
         }
 
         //En función de la dirección del snake, mover la cabeza hacia ese sitio.
-        if (this.direccion == Direcciones.DERECHA) 
+        if (this.direccion == Directions.DERECHA) 
             cabeza.position.x += this.tamX; 
 
-        else if (this.direccion == Direcciones.IZQUIERDA) 
+        else if (this.direccion == Directions.IZQUIERDA) 
             cabeza.position.x -= this.tamX;
 
-        else if (this.direccion == Direcciones.ARRIBA)
+        else if (this.direccion == Directions.ARRIBA)
             cabeza.position.y += this.tamY;
 
-        else if (this.direccion == Direcciones.ABAJO)
+        else if (this.direccion == Directions.ABAJO)
             cabeza.position.y -= this.tamY;
 
     }
@@ -356,7 +356,7 @@ class Snake extends THREE.Object3D{
         segmento.position.set(cola.position.x, cola.position.y, 0); //Colocarlo en la posicion de la cola
         
         //Marcar como ocupado
-        this.matriz[this.conviertePosicionEnIndice(segmento.position.y)][this.conviertePosicionEnIndice(segmento.position.x)] = ValoresMatriz.SERPIENTE;
+        this.matriz[this.conviertePosicionEnIndice(segmento.position.y)][this.conviertePosicionEnIndice(segmento.position.x)] = BoardValues.SERPIENTE;
 
         this.add(segmento);
         this.hecreadosegmento = true;
@@ -370,7 +370,7 @@ class Snake extends THREE.Object3D{
         
         if (this.segmentosSnake.length>1){
             
-            this.matriz[this.conviertePosicionEnIndice(cola.position.y)][this.conviertePosicionEnIndice(cola.position.x)] = ValoresMatriz.VACIO; 
+            this.matriz[this.conviertePosicionEnIndice(cola.position.y)][this.conviertePosicionEnIndice(cola.position.x)] = BoardValues.VACIO; 
             
             // Eliminar geometría, material y el propio objeto del ultimo segmento
             cola.geometry.dispose();
