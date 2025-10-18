@@ -9,7 +9,7 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 
 import { Apple } from './models/apple.js'
 import { Grape } from './models/grape.js'
-import { Naranja } from './models/Naranja.js'
+import { Orange } from './models/orange.js'
 import { Pera } from './models/Pera.js'
 import { Bomb } from './models/Bomb.js'
 import { Snake } from './snake.js'
@@ -526,13 +526,13 @@ const tamanio_borde = 0.45;
       this.crearPera(celda.pos_y, celda.pos_x);
     }
 
-    else if (casilla === BoardValues.NARANJA){
+    else if (casilla === BoardValues.ORANGE){
       this.snake.reducirVelocidad();
       this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SERPIENTE);
-      this.naranja.destruirNaranja();
-      this.remove(this.naranja);
+      this.orange.destroyOrange();
+      this.remove(this.orange);
 
-      this.crearNaranja(celda.pos_y, celda.pos_x);
+      this.createOrange(celda.pos_y, celda.pos_x);
     }
 
     else if (casilla === BoardValues.BOMB){
@@ -557,7 +557,7 @@ const tamanio_borde = 0.45;
     this.createGrape(celda.pos_y, celda.pos_x);
 
     celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX);
-    this.crearNaranja(celda.pos_y, celda.pos_x);
+    this.createOrange(celda.pos_y, celda.pos_x);
 
     celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX);
     this.createBomb(celda.pos_y, celda.pos_x);
@@ -574,8 +574,8 @@ const tamanio_borde = 0.45;
       this.grape.destroyGrape();
       this.remove(this.grape);
 
-      this.naranja.destruirNaranja();
-      this.remove(this.naranja);
+      this.orange.destroyOrange();
+      this.remove(this.orange);
 
       this.bomb.destroyBomb();
       this.remove(this.bomb);
@@ -622,14 +622,14 @@ const tamanio_borde = 0.45;
     this.add(this.bomb);
   }
 
-  //Creamos en la posición real, dada una fila y columna de la matriz determinada, la naranja. También marcamos en la matriz que hay una naranja
-  crearNaranja(fila, columna){
-    this.snake.setCeldaMatriz(fila, columna, BoardValues.NARANJA);
+  //Creamos en la posición real, dada una fila y columna de la matriz determinada, la orange. También marcamos en la matriz que hay una orange
+  createOrange(fila, columna){
+    this.snake.setCeldaMatriz(fila, columna, BoardValues.ORANGE);
 
-    this.naranja = new Naranja();
-    this.naranja.position.set(factor_conversion_mapa*columna, factor_conversion_mapa*fila, 0);
+    this.orange = new Orange();
+    this.orange.position.set(factor_conversion_mapa*columna, factor_conversion_mapa*fila, 0);
 
-    this.add (this.naranja);
+    this.add (this.orange);
   }
 
 

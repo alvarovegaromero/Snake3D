@@ -1,6 +1,6 @@
 import * as THREE from '../../libs/three.module.js'
 
-class PedunculoNaranja extends THREE.Object3D {
+class OrangeStem extends THREE.Object3D {
   constructor() {
     super();
     
@@ -31,17 +31,17 @@ class PedunculoNaranja extends THREE.Object3D {
 
     this.meshPentagono = new THREE.Mesh(geometry, material);
 
-    this.geoRabo = new THREE.CylinderGeometry (0.25, 0.25, 0.7, 50);
+    this.geoStem = new THREE.CylinderGeometry (0.25, 0.25, 0.7, 50);
 
-    this.rabo = new THREE.Mesh (this.geoRabo, material);
-    this.rabo.position.y = 0.35;  // subir el rabo
+    this.stem = new THREE.Mesh (this.geoStem, material);
+    this.stem.position.y = 0.35;  // subir el rabo
 
-    var pedunculoCompleto = new THREE.Object3D();       // crear la manzana como el conjunto de la propia manzana y su rabo
-    pedunculoCompleto.add(this.meshPentagono)
-    pedunculoCompleto.add(this.rabo)
+    var completedStem = new THREE.Object3D(); 
+    completedStem.add(this.meshPentagono);
+    completedStem.add(this.stem);
 
-    this.add(pedunculoCompleto);
+    this.add(completedStem);
   }
 }
 
-export { PedunculoNaranja }
+export { OrangeStem }
