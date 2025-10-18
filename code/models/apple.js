@@ -1,19 +1,19 @@
 import * as THREE from '../../libs/three.module.js'
-import { Pedunculo } from './Pedunculo.js'
+import { Stem } from './stem.js'
 
 class Apple extends THREE.Object3D {
   constructor() {
     super();
     
-    // Se crea el pedunculo, pero no se añade a la escena, solamente se crea un mesh resultante de geometría y material
-    this.pedunculo = new Pedunculo();
+    // Se crea el stem, pero no se añade a la escena, solamente se crea un mesh resultante de geometría y material
+    this.stem = new Stem();
 
-    this.pedunculo.meshPedunculo.position.y = 3.5;  // subir el rabo
+    this.stem.meshStem.position.y = 3.5;  // subir el rabo
 
-    this.apple_without_append = this.createApple();
+    this.apple_without_stem = this.createApple();
 
     this.apple = new THREE.Object3D(); // crear la apple como el conjunto de la propia apple y su rabo
-    this.apple.add(this.apple_without_append, this.pedunculo);
+    this.apple.add(this.apple_without_stem, this.stem);
 
     this.apple.scale.set(0.2, 0.2, 0.2);
     this.apple.rotateX(Math.PI/2);
@@ -23,14 +23,14 @@ class Apple extends THREE.Object3D {
   }
 
   destroyApple(){
-    this.apple_without_append.geometry.dispose();
-    this.apple_without_append.material.dispose();
+    this.apple_without_stem.geometry.dispose();
+    this.apple_without_stem.material.dispose();
 
-    this.pedunculo.meshPedunculo.geometry.dispose();
-    this.pedunculo.meshPedunculo.material.dispose();
+    this.stem.meshStem.geometry.dispose();
+    this.stem.meshStem.material.dispose();
 
-    this.remove(this.apple);
-    this.remove(this.pedunculo);
+    this.remove(this.apple_without_stem);
+    this.remove(this.stem);
     this.remove(this.apple);
   }
 

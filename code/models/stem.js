@@ -1,6 +1,6 @@
 import * as THREE from '../../libs/three.module.js'
 
-class Pedunculo extends THREE.Object3D {
+class Stem extends THREE.Object3D {
   constructor(colorP = 0x95b211) { //Añadimos color como parametro opcional
     super();
     
@@ -25,10 +25,10 @@ class Pedunculo extends THREE.Object3D {
     var geometry = new THREE.ExtrudeGeometry(circuloShape, options);
     geometry.scale(0.7, 0.7, 0.7);
 
-    this.meshPedunculo = new THREE.Mesh(geometry, material);
+    this.meshStem = new THREE.Mesh(geometry, material);
 
-    this.add(this.meshPedunculo);
+    this.add(this.meshStem);
   }
 }
 
-export { Pedunculo }
+export { Stem }

@@ -1,20 +1,20 @@
 import * as THREE from '../../libs/three.module.js'
-import { Pedunculo } from './Pedunculo.js' //Uso pedunculo como "mecha"
+import { Stem } from './stem.js'
 
 class Bomb extends THREE.Object3D {
   constructor() {
     super();
     
     var color = new THREE.Color(0xFFFFFF);
-    // Se crea el pedunculo, pero no se añade a la escena, solamente se crea un mesh resultante de geometría y material
-    this.pedunculo = new Pedunculo(color);
-    this.pedunculo.meshPedunculo.scale.set(0.75,1,0.75);
-    this.pedunculo.meshPedunculo.position.y = 2.5; // subir el rabo
+    // Se crea el stem, pero no se añade a la escena, solamente se crea un mesh resultante de geometría y material
+    this.stem = new Stem(color);
+    this.stem.meshStem.scale.set(0.75,1,0.75);
+    this.stem.meshStem.position.y = 2.5; // subir el rabo
 
     this.bomb = this.createBomb();
 
     this.bombEntera = new THREE.Object3D(); // crear la bomba como el conjunto de la propia bomba y su mecha
-    this.bombEntera.add(this.bomb, this.pedunculo.meshPedunculo);
+    this.bombEntera.add(this.bomb, this.stem.meshStem);
 
     this.bombEntera.scale.set(0.3, 0.3, 0.3);
     this.bombEntera.rotateX(Math.PI/2);
@@ -60,11 +60,11 @@ class Bomb extends THREE.Object3D {
     this.bomb.geometry.dispose();
     this.bomb.material.dispose();
 
-    this.pedunculo.meshPedunculo.geometry.dispose();
-    this.pedunculo.meshPedunculo.material.dispose();
+    this.stem.meshStem.geometry.dispose();
+    this.stem.meshStem.material.dispose();
 
     this.remove(this.bomb);
-    this.remove(this.pedunculo);
+    this.remove(this.stem);
     this.remove(this.bombEntera);
   }
 }

@@ -3,7 +3,7 @@ const BoardValues = Object.freeze({
   SERPIENTE: 1,
   APPLE: 2,
   ORANGE: 3,
-  PERA: 4,
+  PEAR: 4,
   GRAPE: 5,
   BOMB: 6,
 });

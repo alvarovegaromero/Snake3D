@@ -10,7 +10,7 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 import { Apple } from './models/apple.js'
 import { Grape } from './models/grape.js'
 import { Orange } from './models/orange.js'
-import { Pera } from './models/Pera.js'
+import { Pear } from './models/pear.js'
 import { Bomb } from './models/Bomb.js'
 import { Snake } from './snake.js'
 import { Directions } from './constants/directions.js'
@@ -517,13 +517,13 @@ const tamanio_borde = 0.45;
       this.createGrape(celda.pos_y, celda.pos_x);
     }
 
-    else if (casilla === BoardValues.PERA){
+    else if (casilla === BoardValues.PEAR){
       this.snake.aumentarVelocidad();
       this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SERPIENTE);
-      this.pera.destruirPera();
-      this.remove(this.pera);
+      this.pear.destroyPear();
+      this.remove(this.pear);
 
-      this.crearPera(celda.pos_y, celda.pos_x);
+      this.createPear(celda.pos_y, celda.pos_x);
     }
 
     else if (casilla === BoardValues.ORANGE){
@@ -551,7 +551,7 @@ const tamanio_borde = 0.45;
     this.createApple(celda.pos_y, celda.pos_x);
     
     celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX);
-    this.crearPera(celda.pos_y, celda.pos_x);
+    this.createPear(celda.pos_y, celda.pos_x);
 
     celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX);
     this.createGrape(celda.pos_y, celda.pos_x);
@@ -568,8 +568,8 @@ const tamanio_borde = 0.45;
       this.apple.destroyApple();
       this.remove(this.apple);
 
-      this.pera.destruirPera();
-      this.remove(this.pera);
+      this.pear.destroyPear();
+      this.remove(this.pear);
 
       this.grape.destroyGrape();
       this.remove(this.grape);
@@ -602,14 +602,14 @@ const tamanio_borde = 0.45;
     this.add (this.grape);
   }
 
-  //Creamos en la posición real, dada una fila y columna de la matriz determinada, la pera. También marcamos en la matriz que hay una pera
-  crearPera(fila, columna){
-    this.snake.setCeldaMatriz(fila, columna, BoardValues.PERA);
+  //Creamos en la posición real, dada una fila y columna de la matriz determinada, la pear. También marcamos en la matriz que hay una pear
+  createPear(fila, columna){
+    this.snake.setCeldaMatriz(fila, columna, BoardValues.PEAR);
 
-    this.pera = new Pera();
-    this.pera.position.set(factor_conversion_mapa*columna, factor_conversion_mapa*fila, 0);
+    this.pear = new Pear();
+    this.pear.position.set(factor_conversion_mapa*columna, factor_conversion_mapa*fila, 0);
 
-    this.add(this.pera);
+    this.add(this.pear);
   }
 
   //Creamos en la posición real, dada una fila y columna de la matriz determinada, la bomb. También marcamos en la matriz que hay una bomb
