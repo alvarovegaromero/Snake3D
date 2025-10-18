@@ -7,7 +7,7 @@ import { TrackballControls } from '../libs/TrackballControls.js'
 
 // Clases del proyecto
 
-import { Manzana } from './models/Manzana.js'
+import { Apple } from './models/apple.js'
 import { Grape } from './models/grape.js'
 import { Naranja } from './models/Naranja.js'
 import { Pera } from './models/Pera.js'
@@ -499,13 +499,13 @@ const tamanio_borde = 0.45;
     var celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX); //genera una pos random
 
     //En funcion de la fruta que haya, hacer la función correspondiente, marcar la casilla como ocupada por el snake y volver a crear la fruta
-    if (casilla === BoardValues.MANZANA){
+    if (casilla === BoardValues.APPLE){
         this.snake.incrementarTamanio();
         this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SERPIENTE); //Las serpiente se comio la fruta
-        this.manzana.destruirManzana();
-        this.remove(this.manzana);
+        this.apple.destroyApple();
+        this.remove(this.apple);
 
-        this.crearManzana(celda.pos_y, celda.pos_x);
+        this.createApple(celda.pos_y, celda.pos_x);
     }
 
     else if (casilla === BoardValues.GRAPE){
@@ -548,7 +548,7 @@ const tamanio_borde = 0.45;
     // NOTA IMPORTANTE: Recordamos que la y para nosotros son las filas y la x
     // son las columnas, por eso invertimos los parámetros
     var celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX);
-    this.crearManzana(celda.pos_y, celda.pos_x);
+    this.createApple(celda.pos_y, celda.pos_x);
     
     celda = this.obtenerCeldaRandomVacia(this.numeroCasillasY, this.numeroCasillasX);
     this.crearPera(celda.pos_y, celda.pos_x);
@@ -565,9 +565,9 @@ const tamanio_borde = 0.45;
   
   //Elimina TODAS las frutas que hay en la escena. "Borrado en cascada"
   eliminarFrutas(){
-      this.manzana.destruirManzana();
-      this.remove(this.manzana);
-      
+      this.apple.destroyApple();
+      this.remove(this.apple);
+
       this.pera.destruirPera();
       this.remove(this.pera);
 
@@ -581,16 +581,16 @@ const tamanio_borde = 0.45;
       this.remove(this.bomb);
   }
 
-  //Creamos en la posición real, dada una fila y columna de la matriz determinada, la manzana. También marcamos en la matriz que hay una manzana
-  crearManzana(fila, columna){
+  //Creamos en la posición real, dada una fila y columna de la matriz determinada, la apple. También marcamos en la matriz que hay una apple
+  createApple(fila, columna){
     // Reflejar en la matriz que se ha añadido la fruta
-    this.snake.setCeldaMatriz(fila, columna, BoardValues.MANZANA);
+    this.snake.setCeldaMatriz(fila, columna, BoardValues.APPLE);
 
-    this.manzana = new Manzana();
-    
-    this.manzana.position.set(factor_conversion_mapa*columna, factor_conversion_mapa*fila, 0);
+    this.apple = new Apple();
 
-    this.add (this.manzana);
+    this.apple.position.set(factor_conversion_mapa*columna, factor_conversion_mapa*fila, 0);
+
+    this.add (this.apple);
   }
 
   createGrape(fila, columna){
