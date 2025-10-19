@@ -1,6 +1,6 @@
 const BoardValues = Object.freeze({
   VACIO: 0,
-  SERPIENTE: 1,
+  SNAKE: 1,
   APPLE: 2,
   ORANGE: 3,
   PEAR: 4,

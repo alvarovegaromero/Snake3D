@@ -209,11 +209,11 @@ const tamanio_borde = 0.45;
     this.add (this.camera);
   }
 
-  // Cámara que sigue a la serpiente
+  // Cámara que sigue a la snake
   createCamera2 () {
     this.camera2 = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     
-    this.camera2.lookAt(this.snake.segmentosSnake[0].position.x+10, this.snake.segmentosSnake[0].position.y+55, -150);
+    this.camera2.lookAt(this.snake.snakeSegments[0].position.x+10, this.snake.snakeSegments[0].position.y+55, -150);
 
     this.add (this.camera2);
   }
@@ -364,7 +364,7 @@ const tamanio_borde = 0.45;
 
       //Si ya habia una partida antes, borrar las cosas que habia (frutas, snake y renderer)
       if (this.inicioJuego){ 
-        this.snake.eliminarSerpiente();
+        this.snake.destroySnake();
         this.remove(this.snake); // Borrar de DOM
 
         this.eliminarFrutas(); //Eliminar material y geometría de las frutas
@@ -449,7 +449,7 @@ const tamanio_borde = 0.45;
       var distancia_x = coordenada_x - this.snake.getColumnaCabeza(); //Distancia al punto que ha clickado 
       var distancia_y = coordenada_y - this.snake.getFilaCabeza();
 
-      // La serpiente irá a la dirección en la que haya más distancia
+      // La snake irá a la dirección en la que haya más distancia
       // Destacamos que no se puede cambiar el sentido directamente debido a los condicionales del metodo CambiarDireccion
 
       if(Math.abs(distancia_x) > Math.abs(distancia_y)) // Si la distancia de X es mayor que Y. Iremos a la izq o dcha
@@ -501,7 +501,7 @@ const tamanio_borde = 0.45;
     //En funcion de la fruta que haya, hacer la función correspondiente, marcar la casilla como ocupada por el snake y volver a crear la fruta
     if (casilla === BoardValues.APPLE){
         this.snake.incrementarTamanio();
-        this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SERPIENTE); //Las serpiente se comio la fruta
+        this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SNAKE); //Las snake se comio la fruta
         this.apple.destroyApple();
         this.remove(this.apple);
 
@@ -510,7 +510,7 @@ const tamanio_borde = 0.45;
 
     else if (casilla === BoardValues.GRAPE){
       this.snake.decrementarTamanio();
-      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SERPIENTE);
+      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SNAKE);
       this.grape.destroyGrape();
       this.remove(this.grape);
 
@@ -518,8 +518,8 @@ const tamanio_borde = 0.45;
     }
 
     else if (casilla === BoardValues.PEAR){
-      this.snake.aumentarVelocidad();
-      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SERPIENTE);
+      this.snake.increaseSpeed();
+      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SNAKE);
       this.pear.destroyPear();
       this.remove(this.pear);
 
@@ -527,8 +527,8 @@ const tamanio_borde = 0.45;
     }
 
     else if (casilla === BoardValues.ORANGE){
-      this.snake.reducirVelocidad();
-      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SERPIENTE);
+      this.snake.reduceSpeed();
+      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SNAKE);
       this.orange.destroyOrange();
       this.remove(this.orange);
 
@@ -536,7 +536,7 @@ const tamanio_borde = 0.45;
     }
 
     else if (casilla === BoardValues.BOMB){
-      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SERPIENTE);
+      this.snake.setCeldaMatriz(fila_cabeza, columna_cabeza, BoardValues.SNAKE);
       this.snake.perderJuego();
       this.bomb.destroyBomb();
       this.remove(this.bomb);
@@ -649,13 +649,13 @@ const tamanio_borde = 0.45;
         if (this.cambio_camara) //Si hemos cambiado de camara, renderizarla
         {
           this.renderer.render (this, this.camera2);
-          var offset = new THREE.Vector3(this.snake.segmentosSnake[0].position.x, this.snake.segmentosSnake[0].position.y-6, this.snake.segmentosSnake[0].position.z+14);
+          var offset = new THREE.Vector3(this.snake.snakeSegments[0].position.x, this.snake.snakeSegments[0].position.y-6, this.snake.snakeSegments[0].position.z+14);
           
           // Cambia la posicion de la cámara. Lerp interpola entre la posición de la cámara y el offset. No es necesario obtener la posiciones mundiales
           this.camera2.position.lerp(offset, 0.05);
         }
 
-        this.snake.update(); //Actualizar la serpiente
+        this.snake.update(); //Actualizar la snake
 
         //if Para evitar hacer get en una casilla fuera de índice y haya error por los indices
         if(!this.snake.comprobarChoqueMuro(this.snake.getFilaCabeza(), this.snake.getColumnaCabeza())) 
