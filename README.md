@@ -1,6 +1,6 @@
 # 3D Snake
 
-**3D Snake** is a 3D version of the classic Snake game, developed using **Three.js**.  
+**3D Snake** is a 3D version of the classic Snake game, developed using **Three.js**  
 
 This project was created in collaboration with my friend **David Correa Rodríguez** (@davidcr01).
 
