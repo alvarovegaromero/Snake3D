@@ -5,56 +5,54 @@ class Apple extends THREE.Object3D {
   constructor() {
     super();
     
-    // Se crea el stem, pero no se añade a la escena, solamente se crea un mesh resultante de geometría y material
+    // Create the stem (mesh only, not added to scene yet)
     this.stem = new Stem();
+    this.stem.meshStem.position.y = 3.5; // raise the stem
 
-    this.stem.meshStem.position.y = 3.5;  // subir el rabo
+    this.appleBody = this.createApple();
 
-    this.apple_without_stem = this.createApple();
+    this.appleGroup = new THREE.Object3D(); // group for apple and stem
+    this.appleGroup.add(this.appleBody, this.stem);
 
-    this.apple = new THREE.Object3D(); // crear la apple como el conjunto de la propia apple y su rabo
-    this.apple.add(this.apple_without_stem, this.stem);
+    this.appleGroup.scale.set(0.2, 0.2, 0.2);
+    this.appleGroup.rotateX(Math.PI / 2);
+    this.appleGroup.position.set(0.95, 0.95, 0);
 
-    this.apple.scale.set(0.2, 0.2, 0.2);
-    this.apple.rotateX(Math.PI/2);
-    this.apple.position.set(0.95,0.95,0);
-
-    this.add (this.apple);
+    this.add(this.appleGroup);
   }
 
-  destroyApple(){
-    this.apple_without_stem.geometry.dispose();
-    this.apple_without_stem.material.dispose();
+  destroyApple() {
+    this.appleBody.geometry.dispose();
+    this.appleBody.material.dispose();
 
     this.stem.meshStem.geometry.dispose();
     this.stem.meshStem.material.dispose();
 
-    this.remove(this.apple_without_stem);
-    this.remove(this.stem);
-    this.remove(this.apple);
+    this.appleGroup.remove(this.appleBody);
+    this.appleGroup.remove(this.stem);
+    this.remove(this.appleGroup);
   }
 
-  createApple()
-  {
-    var texture = new THREE.TextureLoader().load('./code/images/apple.jpg');
-    var material_apple = new THREE.MeshPhysicalMaterial({map: texture, roughness: 0, reflectivity: 0.35});
+  createApple() {
+    const texture = new THREE.TextureLoader().load('./code/images/apple.jpg');
+    const material = new THREE.MeshPhysicalMaterial({ map: texture,
+                                                      roughness: 0,
+                                                      reflectivity: 0.35 });
 
-    var shapeApple = new THREE.Shape();
-    shapeApple.moveTo(0, 2);
-    shapeApple.quadraticCurveTo(2, -1, 4.5, 2);
-    shapeApple.quadraticCurveTo(7.5, 5, 6, 7.5);
-    shapeApple.quadraticCurveTo(3, 12, 0, 7);
+    const shape = new THREE.Shape();
+    shape.moveTo(0, 2);
+    shape.quadraticCurveTo(2, -1, 4.5, 2);
+    shape.quadraticCurveTo(7.5, 5, 6, 7.5);
+    shape.quadraticCurveTo(3, 12, 0, 7);
 
-    var puntos = shapeApple.extractPoints(10).shape;
-    var appleGeometry = new THREE.LatheGeometry(puntos, 24);
-    appleGeometry.scale(0.8, 1, 0.8);  // reducir su ancho
-    appleGeometry.scale(0.5, 0.5, 0.5);  // reducirla en general
+    const points = shape.extractPoints(10).shape;
+    const geometry = new THREE.LatheGeometry(points, 24);
+    geometry.scale(0.4, 0.5, 0.4); // combined scale for width and general size
 
-    var meshApple = new THREE.Mesh(appleGeometry, material_apple);
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.y -= 0.25;
 
-    meshApple.position.y -= 0.25;
-
-    return meshApple;
+    return mesh;
   }
 }
 
